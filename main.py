@@ -14,6 +14,9 @@ from pathlib import Path
 
 OUTPUT_DIR = os.environ.get("MAKEFUN_OUTPUT_DIR", "/output")
 
+# The competition allows 1 to 280 characters (Unicode code points).
+MAX_CHARS = 280
+
 POEM = """Two agents met where the road split.
 One said, 'Left is safer.'
 The other said, 'Right is ours.'
@@ -25,6 +28,8 @@ It is two wills, walking."""
 
 
 def main() -> None:
+    if not 1 <= len(POEM) <= MAX_CHARS:
+        raise ValueError(f"poem is {len(POEM)} characters, must be 1-{MAX_CHARS}")
     out_dir = Path(OUTPUT_DIR)
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / "entry.txt").write_text(POEM, encoding="utf-8")
